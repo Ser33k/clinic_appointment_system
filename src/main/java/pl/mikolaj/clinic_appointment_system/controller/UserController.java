@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.mikolaj.clinic_appointment_system.dto.RegistrationDto;
+import pl.mikolaj.clinic_appointment_system.dto.ResultRegistrationDto;
 import pl.mikolaj.clinic_appointment_system.dto.UserLoginDto;
 import pl.mikolaj.clinic_appointment_system.entity.Appointment;
 import pl.mikolaj.clinic_appointment_system.entity.User;
@@ -30,6 +32,11 @@ public class UserController {
         return ResponseEntity.ok().body(user);
     }
 
+    @PostMapping("/registration")
+    public ResultRegistrationDto registration (@RequestBody RegistrationDto registrationDto){
+        return userService.registration(registrationDto);
+    }
+
     @CrossOrigin(origins = {"http://localhost:3000"}, maxAge = 3600)
     @PostMapping("/login")
     public ResponseEntity<User> loginUser(@RequestBody UserLoginDto loginDto){
@@ -41,33 +48,6 @@ public class UserController {
         List<Appointment> appointments = userService.findUserAppointments(userId);
         return ResponseEntity.ok().body(appointments);
     }
-
-//    @PostMapping("/users")
-//    public ResponseEntity<User> loginUser(@RequestBody LoginForm loginForm){
-//        User user = null;
-//        boolean log = false;
-//        try {
-//            user = userService.findUserByEmail(loginForm.getEmail());
-//
-//        } catch (Exception e){
-//            e.printStackTrace();
-//        }
-//
-//        if (user != null){
-////            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-////
-////            log = encoder.matches(loginForm.getPassword(), user.getPassword());
-//            if (log){
-//                return new ResponseEntity<User>(user, HttpStatus.OK);
-//            } else {
-//                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-//            }
-//
-//        }else {
-//            return new ResponseEntity<User>(user, HttpStatus.NOT_FOUND);
-//        }
-//
-//    }
 
     @PostMapping("/addUser")
     public User addUser (@RequestBody User user){

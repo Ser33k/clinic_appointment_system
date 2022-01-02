@@ -6,11 +6,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import pl.mikolaj.clinic_appointment_system.dto.UserLoginDto;
-import pl.mikolaj.clinic_appointment_system.entity.Appointment;
-import pl.mikolaj.clinic_appointment_system.entity.User;
+import pl.mikolaj.clinic_appointment_system.dto.*;
+import pl.mikolaj.clinic_appointment_system.entity.*;
+import pl.mikolaj.clinic_appointment_system.repository.DoctorRepository;
+import pl.mikolaj.clinic_appointment_system.repository.PatientRepository;
 import pl.mikolaj.clinic_appointment_system.repository.UserRepository;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,12 +23,34 @@ public class UserService {
     @Autowired
     private  UserRepository userRepository;
 
+    @Autowired
+    private DoctorRepository doctorRepository;
+
+    @Autowired
+    private PatientRepository patientRepository;
+
+    @Autowired
+    private AvailabilityDateService availabilityDateService;
+
     public List<User> findAllUsers() {return userRepository.findAll();}
 
     public Optional<User> findUserById(Long id) {return userRepository.findById(id);}
 
     public List<Appointment> findUserAppointments(Long userId){
         return userRepository.findById(userId).get().getAppointmentList();
+    }
+
+    public ResultRegistrationDto registration (RegistrationDto registrationDto){
+        PatientDto patientDto = registrationDto.getPatientDto();
+        DoctorDto doctorDto = registrationDto.getDoctorDto();
+
+        Object [] users = findUser(patientDto, doctorDto);
+        if(users[0]==null && patientDto!=null)
+            return createPatient(registrationDto);
+        if (users[1]==null && doctorDto!=null)
+        return createDoctor(registrationDto);
+
+        else return null;
     }
 
     public User addUser(User user) {return userRepository.save(user);}
@@ -67,5 +92,55 @@ public class UserService {
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         }
 
+    }
+
+    public Object[] findUser(PatientDto patientDto, DoctorDto doctorDto)
+    {
+        Object[] users={null, null};
+        if(patientDto!=null)
+        {
+            Patient patient = patientRepository.findPatientByUserIdNumber(patientDto.getIdNumber()); //wyszukiwanie wg numeru idNumer, czyli numeru Pesel
+            users[0] = patient; }
+        if(doctorDto!=null)
+        {
+            Doctor doctor = doctorRepository.findDoctorByLicenseNumber(doctorDto.getLicenseNumber()); //wyszukiwanie wg numeru licencji
+            users[1] = doctor;}
+        return users;
+    }
+
+    public ResultRegistrationDto createPatient(RegistrationDto registrationDto){
+
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            User user = new User(registrationDto.getIdNumber(), registrationDto.getEmail(), registrationDto.getPassword(), registrationDto.getFirstName(), registrationDto.getLastName(), registrationDto.getPhoneNumber(), registrationDto.getAddress(), new ArrayList<>(), UserRole.PATIENT);
+
+            user.setPassword(encoder.encode(user.getPassword()));
+
+            Patient patient = new Patient(user, registrationDto.getPatientDto().getWeight(), registrationDto.getPatientDto().getHeight());
+
+            userRepository.save(user);
+            patientRepository.save(patient);
+            return new ResultRegistrationDto(registrationDto.getEmail(), registrationDto.getPassword(), registrationDto.getFirstName(), registrationDto.getLastName(), registrationDto.getPhoneNumber(), registrationDto.getAddress());
+    }
+
+    public ResultRegistrationDto createDoctor(RegistrationDto registrationDto){
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        User user = new User(registrationDto.getIdNumber(), registrationDto.getEmail(), registrationDto.getPassword(), registrationDto.getFirstName(), registrationDto.getLastName(), registrationDto.getPhoneNumber(), registrationDto.getAddress(), new ArrayList<>(), UserRole.DOCTOR);
+
+        user.setPassword(encoder.encode(user.getPassword()));
+
+        Doctor doctor = new Doctor(registrationDto.getDoctorDto().getLicenseNumber(), user, new ArrayList<>());
+
+        userRepository.save(user);
+        doctorRepository.save(doctor);
+
+        AvailabilityDate ad = new AvailabilityDate(LocalDateTime.parse("2018-12-30T19:34:50.63"),true, 30,doctor);
+        AvailabilityDate ad1 = new AvailabilityDate(LocalDateTime.parse("2019-12-30T19:34:50.63"),true, 30,doctor);
+        AvailabilityDate ad2 = new AvailabilityDate(LocalDateTime.parse("2020-12-30T19:34:50.63"),true, 30,doctor);
+//
+        availabilityDateService.createAvailabilityDate(ad);
+        availabilityDateService.createAvailabilityDate(ad1);
+        availabilityDateService.createAvailabilityDate(ad2);
+        return new ResultRegistrationDto(registrationDto.getEmail(), registrationDto.getPassword(), registrationDto.getFirstName(), registrationDto.getLastName(), registrationDto.getPhoneNumber(), registrationDto.getAddress());
     }
 }

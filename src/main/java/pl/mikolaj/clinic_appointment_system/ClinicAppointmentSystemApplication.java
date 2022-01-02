@@ -47,25 +47,25 @@ public class ClinicAppointmentSystemApplication {
 //            userService.createUser(userDoctor);
 //            userService.createUser(userPatient);
 
-            DoctorDto doctorDto = new DoctorDto("0101022","doktor@o2.pl", "doktor", "Dr Piotr", "Napierala", "555-555-55", "adddr", "4214fsa3");
-
-            doctorService.createDoctor(doctorDto);
-
-            Doctor doctor = doctorService.findAllDoctors().get(0);
-            AvailabilityDate ad = new AvailabilityDate(LocalDateTime.parse("2018-12-30T19:34:50.63"),true, 30,doctor);
-            AvailabilityDate ad1 = new AvailabilityDate(LocalDateTime.parse("2019-12-30T19:34:50.63"),true, 30,doctor);
-            AvailabilityDate ad2 = new AvailabilityDate(LocalDateTime.parse("2020-12-30T19:34:50.63"),true, 30,doctor);
+//            DoctorDto doctorDto = new DoctorDto("0101022","doktor@o2.pl", "doktor", "Dr Piotr", "Napierala", "555-555-55", "adddr", "4214fsa3");
 //
-            availabilityDateService.createAvailabilityDate(ad);
-            availabilityDateService.createAvailabilityDate(ad1);
-            availabilityDateService.createAvailabilityDate(ad2);
+//            doctorService.createDoctor(doctorDto);
+//
+//            Doctor doctor = doctorService.findAllDoctors().get(0);
+//            AvailabilityDate ad = new AvailabilityDate(LocalDateTime.parse("2018-12-30T19:34:50.63"),true, 30,doctor);
+//            AvailabilityDate ad1 = new AvailabilityDate(LocalDateTime.parse("2019-12-30T19:34:50.63"),true, 30,doctor);
+//            AvailabilityDate ad2 = new AvailabilityDate(LocalDateTime.parse("2020-12-30T19:34:50.63"),true, 30,doctor);
+////
+//            availabilityDateService.createAvailabilityDate(ad);
+//            availabilityDateService.createAvailabilityDate(ad1);
+//            availabilityDateService.createAvailabilityDate(ad2);
 //            doctor.setAvailabilityDates(List.of(ad,ad1,ad2));
 //
 //            doctorService.saveDoctor(doctor);
 //
-            PatientDto patientDto = new PatientDto("98202012","pacjent@o2.pl", "pacjent", "Mikolaj", "Kiernik","555-55", "adrrr");
+//            PatientDto patientDto = new PatientDto("98202012","pacjent@o2.pl", "pacjent", "Mikolaj", "Kiernik","555-55", "adrrr");
 
-            patientService.createPatient(patientDto);
+//            patientService.createPatient(patientDto);
 //
 //            Appointment appointment = new Appointment(ad, AppointmentStatus.SCHEDULED, patient);
 //
