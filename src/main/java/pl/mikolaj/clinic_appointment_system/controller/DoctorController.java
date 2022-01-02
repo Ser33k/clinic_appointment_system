@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.mikolaj.clinic_appointment_system.dto.ScheduleAppointmentDto;
 import pl.mikolaj.clinic_appointment_system.entity.Doctor;
 import pl.mikolaj.clinic_appointment_system.service.DoctorService;
 
@@ -27,8 +28,18 @@ public class DoctorController {
         return doctorService.findDoctorById(id);
     }
 
+    @GetMapping("/doctors/{licenseNumber}/appointments")
+    public List<ScheduleAppointmentDto> findDoctorsAppointments(@PathVariable(value = "licenseNumber") String licenseNumber){
+        return doctorService.findDoctorsAppointments(licenseNumber);
+    }
+
     @PostMapping("/doctors")
     public Doctor addDoctor(@RequestBody Doctor doctor){
         return doctorService.addDoctor(doctor);
+    }
+
+    @GetMapping("/licenseNumberByUser/{userIdNumber}")
+    public String getLicenseNumberByUser(@PathVariable String userIdNumber){
+        return doctorService.getLicenseNumberByUserIdNumber(userIdNumber);
     }
 }
