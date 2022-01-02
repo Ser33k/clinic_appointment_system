@@ -7,6 +7,5 @@ import pl.mikolaj.clinic_appointment_system.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
     User findUserByEmail(String email);
-
     User findUserByIdNumber(String idNumber);
 }

@@ -24,7 +24,10 @@ public class UserService {
 
     public Optional<User> findUserById(Long id) {return userRepository.findById(id);}
 
-    public List<Appointment> findUserAppointments(Long userId){return userRepository.findById(userId).get().getAppointmentList();}
+    public List<Appointment> findUserAppointments(Long userId){
+        return userRepository.findById(userId).get().getAppointmentList();
+    }
+
     public User addUser(User user) {return userRepository.save(user);}
 
     public void deleteUser(User user) {
@@ -53,7 +56,6 @@ public class UserService {
 
         if (user != null){
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//
             log = encoder.matches(loginForm.getPassword(), user.getPassword());
             if (log){
                 return ResponseEntity.ok(user);

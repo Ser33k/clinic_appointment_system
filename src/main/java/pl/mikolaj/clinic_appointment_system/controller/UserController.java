@@ -33,14 +33,12 @@ public class UserController {
     @CrossOrigin(origins = {"http://localhost:3000"}, maxAge = 3600)
     @PostMapping("/login")
     public ResponseEntity<User> loginUser(@RequestBody UserLoginDto loginDto){
-        int a = 0;
         return userService.loginUser(loginDto);
     }
 
     @GetMapping("users/{id}/appointments")
     public ResponseEntity<List<Appointment>> findUserAppointments(@PathVariable(value = "id") Long userId) {
         List<Appointment> appointments = userService.findUserAppointments(userId);
-
         return ResponseEntity.ok().body(appointments);
     }
 
