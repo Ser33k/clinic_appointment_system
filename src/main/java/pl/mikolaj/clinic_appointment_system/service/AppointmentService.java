@@ -85,14 +85,12 @@ public class AppointmentService {
     }
 
     public ResultAppointmentDto reserveAppointment(ReserveAppointmentDto reserveAppointmentDto) {
-
         int result=0;
         ResultAppointmentDto resultAppointmentDto = new ResultAppointmentDto();
         Object [] users = userService.findUser(reserveAppointmentDto.getPatientDto(), reserveAppointmentDto.getDoctorDto());
-
         Patient patient = (Patient) users[0];
         Doctor doctor = (Doctor) users[1];
-        if(patient == null)
+        if (patient == null)
         {
             resultAppointmentDto.setPatientIdNumber(null);
             result=1;
@@ -102,10 +100,13 @@ public class AppointmentService {
             resultAppointmentDto.setDoctorLicenseNumber(null);
             result++;
         }
-        if(result>0)
-            return resultAppointmentDto;
+        if (result > 0) return resultAppointmentDto;
+
+        resultAppointmentDto.setPatientIdNumber(patient.getUser().getIdNumber());
+        resultAppointmentDto.setDoctorLicenseNumber(doctor.getLicenseNumber());
 
         Appointment appointment = findFreeTerm(users, reserveAppointmentDto.getDate(), reserveAppointmentDto.getDuration());
+
         appointment.setDescription(reserveAppointmentDto.getDescription());
         resultAppointmentDto.setDescription(reserveAppointmentDto.getDescription());
 
@@ -113,19 +114,18 @@ public class AppointmentService {
             resultAppointmentDto.setDate(null);
             return resultAppointmentDto;
         }
+        resultAppointmentDto.setDate(reserveAppointmentDto.getDate());
 
         patient.getUser().getAppointmentList().add(appointment);
         doctor.getUser().getAppointmentList().add(appointment);
 
         appointmentRepository.save(appointment);
-
         userRepository.save(patient.getUser());
         userRepository.save(doctor.getUser());
-
         return resultAppointmentDto;
     }
 
-    public Appointment findFreeTerm (Object []users, LocalDateTime date, int durationMinutes)
+    public Appointment findFreeTerm (Object [] users, LocalDateTime date, int durationMinutes)
     {
         Patient patient = (Patient) users[0];
         Doctor doctor = (Doctor)users[1];

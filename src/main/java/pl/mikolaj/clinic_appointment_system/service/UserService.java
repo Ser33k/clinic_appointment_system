@@ -104,7 +104,8 @@ public class UserService {
         if(doctorDto!=null)
         {
             Doctor doctor = doctorRepository.findDoctorByLicenseNumber(doctorDto.getLicenseNumber()); //wyszukiwanie wg numeru licencji
-            users[1] = doctor;}
+            users[1] = doctor;
+        }
         return users;
     }
 
@@ -134,9 +135,9 @@ public class UserService {
         userRepository.save(user);
         doctorRepository.save(doctor);
 
-        AvailabilityDate ad = new AvailabilityDate(LocalDateTime.parse("2018-12-30T19:34:50.63"),true, 30,doctor);
-        AvailabilityDate ad1 = new AvailabilityDate(LocalDateTime.parse("2019-12-30T19:34:50.63"),true, 30,doctor);
-        AvailabilityDate ad2 = new AvailabilityDate(LocalDateTime.parse("2020-12-30T19:34:50.63"),true, 30,doctor);
+        AvailabilityDate ad = new AvailabilityDate(LocalDateTime.parse("2022-01-30T20:30"),true, 30,doctor);
+        AvailabilityDate ad1 = new AvailabilityDate(LocalDateTime.parse("2022-01-30T19:00"),true, 30,doctor);
+        AvailabilityDate ad2 = new AvailabilityDate(LocalDateTime.parse("2020-01-30T18:30"),true, 30,doctor);
 //
         availabilityDateService.createAvailabilityDate(ad);
         availabilityDateService.createAvailabilityDate(ad1);
