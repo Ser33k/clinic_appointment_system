@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.mikolaj.clinic_appointment_system.dto.AppointmentDto;
+import pl.mikolaj.clinic_appointment_system.dto.ReserveAppointmentDto;
+import pl.mikolaj.clinic_appointment_system.dto.ResultAppointmentDto;
 import pl.mikolaj.clinic_appointment_system.entity.Appointment;
 import pl.mikolaj.clinic_appointment_system.entity.AppointmentStatus;
 import pl.mikolaj.clinic_appointment_system.entity.Doctor;
@@ -29,10 +31,15 @@ public class AppointmentController {
         return appointmentService.findAppointmentById(id);
     }
 
-    @PostMapping("/appointments")
-    public ResponseEntity<Appointment> addAppointment(@RequestBody AppointmentDto appointmentDto){
-        Appointment appointment = appointmentService.createAppointment(appointmentDto);
-        return ResponseEntity.ok(appointment);
+//    @PostMapping("/appointments")
+//    public ResponseEntity<Appointment> addAppointment(@RequestBody AppointmentDto appointmentDto){
+//        Appointment appointment = appointmentService.createAppointment(appointmentDto);
+//        return ResponseEntity.ok(appointment);
+//    }
+
+    @PostMapping("/appointment")
+    public ResultAppointmentDto createAppointment(@RequestBody ReserveAppointmentDto reserveAppointmentDto){
+        return appointmentService.reserveAppointment(reserveAppointmentDto);
     }
 
     @GetMapping("/appointments/{status}")
