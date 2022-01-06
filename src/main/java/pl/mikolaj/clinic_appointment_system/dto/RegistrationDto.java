@@ -1,5 +1,6 @@
 package pl.mikolaj.clinic_appointment_system.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +8,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Data
+@AllArgsConstructor
 public class RegistrationDto {
     private String idNumber;
 

@@ -7,6 +7,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import pl.mikolaj.clinic_appointment_system.dto.DoctorDto;
 import pl.mikolaj.clinic_appointment_system.dto.PatientDto;
+import pl.mikolaj.clinic_appointment_system.dto.RegistrationDto;
 import pl.mikolaj.clinic_appointment_system.entity.*;
 import pl.mikolaj.clinic_appointment_system.service.*;
 
@@ -37,6 +38,7 @@ public class ClinicAppointmentSystemApplication {
 
     @EventListener(ApplicationReadyEvent.class)
     public void fill(){
+//        RegistrationDto = new RegistrationDto("")
 ////        Plant p = plantRepo.findById(2L).get();
 ////        Measurement measurement = new Measurement(25, 32, 75, LocalDateTime.now(), p);
 ////        measurementService.save(measurement);

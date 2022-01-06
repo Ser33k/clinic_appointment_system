@@ -53,12 +53,6 @@ public class UserService {
         else return null;
     }
 
-    public User addUser(User user) {return userRepository.save(user);}
-
-    public void deleteUser(User user) {
-        userRepository.delete(user);
-    }
-
     public User createUser(User user){
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
@@ -66,7 +60,7 @@ public class UserService {
         userRepository.save(user);
         return user;
     }
-//
+
     public User findUserByEmail(String email) {return userRepository.findUserByEmail(email);}
 
     public ResponseEntity<User> loginUser(@RequestBody UserLoginDto loginForm){
@@ -109,14 +103,21 @@ public class UserService {
         return users;
     }
 
+    private User createUser(RegistrationDto registrationDto,UserRole userRole)
+    { BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        User user = new User(registrationDto.getIdNumber(), registrationDto.getEmail(),
+                registrationDto.getPassword(), registrationDto.getFirstName(),
+                registrationDto.getLastName(), registrationDto.getPhoneNumber(),
+                registrationDto.getAddress(), new ArrayList<>(), userRole);
+        user.setPassword(encoder.encode(user.getPassword()));
+        return user;
+    }
+
     public ResultRegistrationDto createPatient(RegistrationDto registrationDto){
 
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            User user = new User(registrationDto.getIdNumber(), registrationDto.getEmail(), registrationDto.getPassword(), registrationDto.getFirstName(), registrationDto.getLastName(), registrationDto.getPhoneNumber(), registrationDto.getAddress(), new ArrayList<>(), UserRole.PATIENT);
+        User user=createUser(registrationDto,UserRole.PATIENT);
 
-            user.setPassword(encoder.encode(user.getPassword()));
-
-            Patient patient = new Patient(user, registrationDto.getPatientDto().getWeight(), registrationDto.getPatientDto().getHeight());
+        Patient patient = new Patient(user, registrationDto.getPatientDto().getWeight(), registrationDto.getPatientDto().getHeight());
 
             userRepository.save(user);
             patientRepository.save(patient);
@@ -124,24 +125,23 @@ public class UserService {
     }
 
     public ResultRegistrationDto createDoctor(RegistrationDto registrationDto){
-
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        User user = new User(registrationDto.getIdNumber(), registrationDto.getEmail(), registrationDto.getPassword(), registrationDto.getFirstName(), registrationDto.getLastName(), registrationDto.getPhoneNumber(), registrationDto.getAddress(), new ArrayList<>(), UserRole.DOCTOR);
-
-        user.setPassword(encoder.encode(user.getPassword()));
-
-        Doctor doctor = new Doctor(registrationDto.getDoctorDto().getLicenseNumber(), user, new ArrayList<>());
-
+        User user=createUser(registrationDto,UserRole.DOCTOR);
+        Doctor doctor = new Doctor(registrationDto.getDoctorDto().getLicenseNumber(),
+                user, new ArrayList<>());
         userRepository.save(user);
         doctorRepository.save(doctor);
-
-        AvailabilityDate ad = new AvailabilityDate(LocalDateTime.parse("2022-01-30T20:30"),true, 30,doctor);
-        AvailabilityDate ad1 = new AvailabilityDate(LocalDateTime.parse("2022-01-30T19:00"),true, 30,doctor);
-        AvailabilityDate ad2 = new AvailabilityDate(LocalDateTime.parse("2020-01-30T18:30"),true, 30,doctor);
-//
+        pom(doctor);
+        return new ResultRegistrationDto(registrationDto.getEmail(),
+                registrationDto.getPassword(), registrationDto.getFirstName(),
+                registrationDto.getLastName(), registrationDto.getPhoneNumber(),
+                registrationDto.getAddress());
+    }
+    private void pom(Doctor doctor) {
+        AvailabilityDate ad = new AvailabilityDate(LocalDateTime.parse("2022-01-30T20:30"), true, 30, doctor);
+        AvailabilityDate ad1 = new AvailabilityDate(LocalDateTime.parse("2022-01-30T19:00"), true, 30, doctor);
+        AvailabilityDate ad2 = new AvailabilityDate(LocalDateTime.parse("2020-01-30T18:30"), true, 30, doctor);
         availabilityDateService.createAvailabilityDate(ad);
         availabilityDateService.createAvailabilityDate(ad1);
         availabilityDateService.createAvailabilityDate(ad2);
-        return new ResultRegistrationDto(registrationDto.getEmail(), registrationDto.getPassword(), registrationDto.getFirstName(), registrationDto.getLastName(), registrationDto.getPhoneNumber(), registrationDto.getAddress());
     }
 }
