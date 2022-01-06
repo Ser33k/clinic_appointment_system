@@ -8,8 +8,6 @@ import pl.mikolaj.clinic_appointment_system.entity.Doctor;
 import pl.mikolaj.clinic_appointment_system.repository.AvailabilityDateRepository;
 import pl.mikolaj.clinic_appointment_system.repository.DoctorRepository;
 
-import javax.print.Doc;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,9 +22,7 @@ public class AvailabilityDateService {
     public AvailabilityDate createAvailabilityDate(AvailabilityDate availabilityDate){
 
         Doctor doctor = availabilityDate.getDoctor();
-
 //        Optional<AvailabilityDate> adOptional = doctor.getAvailabilityDates().stream().filter(a -> a.getDate().isEqual(availabilityDate.getDate())).findFirst();
-
 //        if (adOptional.isEmpty()){
             availabilityDateRepository.save(availabilityDate);
 

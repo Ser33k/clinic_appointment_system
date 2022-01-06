@@ -21,37 +21,8 @@ public class PatientService {
     @Autowired
     private PatientRepository patientRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     public List<Patient> findAllPatients() {return patientRepository.findAll();}
 
     public Optional<Patient> findPatientById(Long id) {return patientRepository.findById(id);}
-
-    public Optional<Patient> findPatientByUser(User user){return patientRepository.findPatientByUser(user);}
-
-    public Patient addPatient(Patient patient) {return patientRepository.save(patient);}
-
-    public void deletePatient(Patient patient) {
-        patientRepository.delete(patient);
-    }
-
-//    public ResponseEntity<Patient> createPatient(PatientDto patientdto){
-//        User user1 = userRepository.findUserByIdNumber(patientdto.getIdNumber());
-//
-//        if (user1 == null){
-//            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//            User user = new User(patientdto.getIdNumber(), patientdto.getEmail(), patientdto.getPassword(), patientdto.getFirstName(), patientdto.getLastName(), patientdto.getPhoneNumber(), patientdto.getAddress(), new ArrayList<>(), UserRole.PATIENT);
-//
-//            user.setPassword(encoder.encode(user.getPassword()));
-//
-//            Patient patient = new Patient(user, 30., 50.);
-//
-//            userRepository.save(user);
-//            patientRepository.save(patient);
-//            return ResponseEntity.ok(patient);
-//        }
-//        return null;
-//    }
 
 }

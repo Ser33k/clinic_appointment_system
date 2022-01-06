@@ -33,11 +33,6 @@ public class DoctorController {
         return doctorService.findDoctorsAppointments(licenseNumber);
     }
 
-    @PostMapping("/doctors")
-    public Doctor addDoctor(@RequestBody Doctor doctor){
-        return doctorService.addDoctor(doctor);
-    }
-
     @GetMapping("/licenseNumberByUser/{userIdNumber}")
     public String getLicenseNumberByUser(@PathVariable String userIdNumber){
         return doctorService.getLicenseNumberByUserIdNumber(userIdNumber);

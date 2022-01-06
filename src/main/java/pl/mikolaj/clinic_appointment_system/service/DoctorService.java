@@ -25,23 +25,10 @@ public class DoctorService {
     @Autowired
     private DoctorRepository doctorRepository;
 
-    @Autowired
-    private UserRepository userRepository;
 
     public List<Doctor> findAllDoctors() {return doctorRepository.findAll();}
 
     public Optional<Doctor> findDoctorById(Long id) {return doctorRepository.findById(id);}
-
-    public Doctor addDoctor(Doctor doctor) {return doctorRepository.save(doctor);}
-
-    public void deleteDoctor(Doctor doctor) {
-        doctorRepository.delete(doctor);
-    }
-
-    public Doctor createDoctor(Doctor doctor){
-        doctorRepository.save(doctor);
-        return doctor;
-    }
 
     public List<ScheduleAppointmentDto> findDoctorsAppointments(String licenseNumber) {
         Doctor doctor = doctorRepository.findDoctorByLicenseNumber(licenseNumber);
@@ -65,29 +52,6 @@ public class DoctorService {
 
         return dtoList;
     }
-
-//    public ResponseEntity<Doctor> createDoctor(DoctorDto doctorDto){
-//        User user1 = userRepository.findUserByIdNumber(doctorDto.getIdNumber());
-//
-//        if (user1 == null){
-//            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//            User user = new User(doctorDto.getIdNumber(), doctorDto.getEmail(), doctorDto.getPassword(), doctorDto.getFirstName(), doctorDto.getLastName(), doctorDto.getPhoneNumber(), doctorDto.getAddress(), new ArrayList<>(), UserRole.DOCTOR);
-//
-//            user.setPassword(encoder.encode(user.getPassword()));
-//
-//            Doctor doctor = new Doctor(doctorDto.getLicenseNumber(), user, new ArrayList<AvailabilityDate>());
-//
-//            userRepository.save(user);
-//            doctorRepository.save(doctor);
-//            return ResponseEntity.ok(doctor);
-//        }
-//        return null;
-//    }
-
-    public void saveDoctor(Doctor doctor){
-        doctorRepository.save(doctor);
-    }
-
 
     public String getLicenseNumberByUserIdNumber(String userIdNumber) {
         Doctor doctor = doctorRepository.findDoctorByUserIdNumber(userIdNumber);

@@ -53,14 +53,6 @@ public class UserService {
         else return null;
     }
 
-    public User createUser(User user){
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        user.setPassword(encoder.encode(user.getPassword()));
-
-        userRepository.save(user);
-        return user;
-    }
-
     public User findUserByEmail(String email) {return userRepository.findUserByEmail(email);}
 
     public ResponseEntity<User> loginUser(@RequestBody UserLoginDto loginForm){

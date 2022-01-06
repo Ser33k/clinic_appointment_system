@@ -48,9 +48,4 @@ public class UserController {
         List<Appointment> appointments = userService.findUserAppointments(userId);
         return ResponseEntity.ok().body(appointments);
     }
-
-    @PostMapping("/addUser")
-    public User addUser (@RequestBody User user){
-        return userService.createUser(user);
-    }
 }

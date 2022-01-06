@@ -29,12 +29,4 @@ public class PatientController {
         return patientService.findPatientById(id);
     }
 
-//    @PostMapping("/patients")
-//    public ResponseEntity<Patient> addPatient(@RequestBody PatientDto patient){
-//        return patientService.createPatient(patient);
-//    }
-
-
-
-
 }

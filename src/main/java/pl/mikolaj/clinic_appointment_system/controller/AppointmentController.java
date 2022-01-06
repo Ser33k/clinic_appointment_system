@@ -31,12 +31,6 @@ public class AppointmentController {
         return appointmentService.findAppointmentById(id);
     }
 
-//    @PostMapping("/appointments")
-//    public ResponseEntity<Appointment> addAppointment(@RequestBody AppointmentDto appointmentDto){
-//        Appointment appointment = appointmentService.createAppointment(appointmentDto);
-//        return ResponseEntity.ok(appointment);
-//    }
-
     @PostMapping("/appointment")
     public ResultAppointmentDto createAppointment(@RequestBody ReserveAppointmentDto reserveAppointmentDto){
         return appointmentService.reserveAppointment(reserveAppointmentDto);
