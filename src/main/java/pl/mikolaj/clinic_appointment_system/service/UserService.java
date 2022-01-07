@@ -32,14 +32,6 @@ public class UserService {
     @Autowired
     private AvailabilityDateService availabilityDateService;
 
-    public List<User> findAllUsers() {return userRepository.findAll();}
-
-    public Optional<User> findUserById(Long id) {return userRepository.findById(id);}
-
-    public List<Appointment> findUserAppointments(Long userId){
-        return userRepository.findById(userId).get().getAppointmentList();
-    }
-
     public ResultRegistrationDto registration (RegistrationDto registrationDto){
         PatientDto patientDto = registrationDto.getPatientDto();
         DoctorDto doctorDto = registrationDto.getDoctorDto();
@@ -128,6 +120,7 @@ public class UserService {
                 registrationDto.getLastName(), registrationDto.getPhoneNumber(),
                 registrationDto.getAddress());
     }
+
     private void pom(Doctor doctor) {
         AvailabilityDate ad = new AvailabilityDate(LocalDateTime.parse("2022-01-30T20:30"), true, 30, doctor);
         AvailabilityDate ad1 = new AvailabilityDate(LocalDateTime.parse("2022-01-30T19:00"), true, 30, doctor);

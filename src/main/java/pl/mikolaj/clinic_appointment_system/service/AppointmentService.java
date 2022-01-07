@@ -27,15 +27,6 @@ public class AppointmentService {
     @Autowired
     private UserService userService;
 
-    public List<Appointment> findAllAppointments() {return appointmentRepository.findAll();}
-
-    public Optional<Appointment> findAppointmentById(Long id) {return appointmentRepository.findById(id);}
-
-
-    public List<Appointment> findAppointmentsByStatus(AppointmentStatus status){
-        return appointmentRepository.findAppointmentsByStatus(status);
-    }
-
     public ResultAppointmentDto reserveAppointment(ReserveAppointmentDto reserveAppointmentDto) {
         int result=0;
         ResultAppointmentDto resultAppointmentDto = new ResultAppointmentDto();

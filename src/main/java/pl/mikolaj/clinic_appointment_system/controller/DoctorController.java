@@ -23,11 +23,6 @@ public class DoctorController {
         return ResponseEntity.ok(doctors);
     }
 
-    @GetMapping("/doctors/{id}")
-    public Optional<Doctor> findDoctorById(@PathVariable(value = "id") Long id){
-        return doctorService.findDoctorById(id);
-    }
-
     @GetMapping("/doctors/{licenseNumber}/appointments")
     public List<ScheduleAppointmentDto> findDoctorsAppointments(@PathVariable(value = "licenseNumber") String licenseNumber){
         return doctorService.findDoctorsAppointments(licenseNumber);

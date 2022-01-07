@@ -28,8 +28,6 @@ public class DoctorService {
 
     public List<Doctor> findAllDoctors() {return doctorRepository.findAll();}
 
-    public Optional<Doctor> findDoctorById(Long id) {return doctorRepository.findById(id);}
-
     public List<ScheduleAppointmentDto> findDoctorsAppointments(String licenseNumber) {
         Doctor doctor = doctorRepository.findDoctorByLicenseNumber(licenseNumber);
 
