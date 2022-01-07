@@ -47,29 +47,24 @@ public class UserService {
 
     public User findUserByEmail(String email) {return userRepository.findUserByEmail(email);}
 
-    public ResponseEntity<User> loginUser(@RequestBody UserLoginDto loginForm){
+    public ResultUserDto loginUser(@RequestBody UserLoginDto loginForm){
         User user = null;
         boolean log = false;
-        try {
-            user = findUserByEmail(loginForm.getEmail());
 
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+        user = findUserByEmail(loginForm.getEmail());
 
         if (user != null){
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             log = encoder.matches(loginForm.getPassword(), user.getPassword());
             if (log){
-                return ResponseEntity.ok(user);
+                return new ResultUserDto(user.getRole(), user.getIdNumber());
             } else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+                return new ResultUserDto(user.getRole(), null);
             }
 
         }else {
-            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+            return new ResultUserDto(null, null);
         }
-
     }
 
     public Object[] findUser(PatientDto patientDto, DoctorDto doctorDto)

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.mikolaj.clinic_appointment_system.dto.RegistrationDto;
 import pl.mikolaj.clinic_appointment_system.dto.ResultRegistrationDto;
+import pl.mikolaj.clinic_appointment_system.dto.ResultUserDto;
 import pl.mikolaj.clinic_appointment_system.dto.UserLoginDto;
 import pl.mikolaj.clinic_appointment_system.entity.Appointment;
 import pl.mikolaj.clinic_appointment_system.entity.User;
@@ -25,9 +26,8 @@ public class UserController {
         return userService.registration(registrationDto);
     }
 
-    @CrossOrigin(origins = {"http://localhost:3000"}, maxAge = 3600)
     @PostMapping("/login")
-    public ResponseEntity<User> loginUser(@RequestBody UserLoginDto loginDto){
+    public ResultUserDto loginUser(@RequestBody UserLoginDto loginDto){
         return userService.loginUser(loginDto);
     }
 }
